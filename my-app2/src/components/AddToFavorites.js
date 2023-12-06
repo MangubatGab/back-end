@@ -5,7 +5,7 @@ const AddToFavorites = ({ recipeId }) => {
 
   const checkIfFavorite = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/favorites', {
+      const response = await fetch('https://back-end-six-iota.vercel.app/api/favorites', {
         credentials: 'include',
       });
 
@@ -27,7 +27,7 @@ const AddToFavorites = ({ recipeId }) => {
   const addToFavorites = async () => {
     try {
       if (!isFavorite) {
-        const response = await fetch(`http://localhost:3000/api/favorites/${recipeId}`, {
+        const response = await fetch(`https://back-end-six-iota.vercel.app/api/favorites/${recipeId}`, {
           method: 'POST',
           credentials: 'include',
         });
@@ -48,7 +48,7 @@ const AddToFavorites = ({ recipeId }) => {
 
   const removeFromFavorites = async () => {
     try {
-      const response = await fetch(`https://deploy-nine-pi.vercel.app/api/favorites/${recipeId}`, {
+      const response = await fetch(`https://back-end-six-iota.vercel.app/api/favorites/${recipeId}`, {
         method: 'DELETE',
         credentials: 'include',
       });

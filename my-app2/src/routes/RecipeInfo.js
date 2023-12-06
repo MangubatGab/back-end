@@ -13,7 +13,7 @@ const RecipeInfo = () => {
 
   const fetchRecipeData = useCallback(async () => {
     try {
-      const response = await fetch(`https://deploy-nine-pi.vercel.app/api/recipes/${recipeId}`);
+      const response = await fetch(`https://back-end-six-iota.vercel.app/api/recipes/${recipeId}`);
       if (response.ok) {
         const data = await response.json();
         setRecipeData(data);
@@ -31,7 +31,7 @@ const RecipeInfo = () => {
 
   const updateRecipeTitle = async () => {
     try {
-      const response = await fetch(`https://deploy-nine-pi.vercel.app/api/recipes/${recipeId}`, {
+      const response = await fetch(`https://back-end-six-iota.vercel.app/api/recipes/${recipeId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

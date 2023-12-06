@@ -10,7 +10,7 @@ const Favorites = () => {
 
   const fetchFavorites = async () => {
     try {
-      const response = await fetch('https://deploy-nine-pi.vercel.app/api/favorites', {
+      const response = await fetch('https://back-end-six-iota.vercel.app/api/favorites', {
         credentials: 'include',
       });
 
@@ -28,7 +28,7 @@ const Favorites = () => {
 
   const fetchRecipeDetails = async (recipeId) => {
     try {
-      const response = await fetch(`https://deploy-nine-pi.vercel.app/api/recipes/${recipeId}`, {
+      const response = await fetch(`https://back-end-six-iota.vercel.app/recipes/${recipeId}`, {
         credentials: 'include',
       });
 
