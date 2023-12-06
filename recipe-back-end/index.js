@@ -6,23 +6,15 @@ const session = require('express-session');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
 // MongoDB Connection
 mongoose.connect('mongodb+srv://gabmangubat:Gabriel11082013@cluster0.qcgxnks.mongodb.net/recipeApp', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-  console.log('Connected to MongoDB!');
-});
-
 // CORS middleware function
 app.use((req, res, next) => {
-  const allowedOrigins = ['http://localhost:3001','https://back-end-six-iota.vercel.app/']; // Add other allowed origins if needed
+  const allowedOrigins = ['http://localhost:3001','*']; // Add other allowed origins if needed
   const { origin } = req.headers;
 
   if (allowedOrigins.includes(origin)) {
