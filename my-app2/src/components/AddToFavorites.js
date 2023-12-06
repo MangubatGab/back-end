@@ -8,10 +8,12 @@ const AddToFavorites = ({ recipeId }) => {
       const response = await fetch('https://back-end-six-iota.vercel.app/api/favorites', {
         credentials: 'include',
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         setIsFavorite(data.favorites.includes(recipeId));
+      } else if (response.status === 404) {
+        setIsFavorite(false);
       } else {
         throw new Error('Failed to fetch favorites');
       }
@@ -31,10 +33,12 @@ const AddToFavorites = ({ recipeId }) => {
           method: 'POST',
           credentials: 'include',
         });
-
+  
         if (response.ok) {
           setIsFavorite(true);
           console.log('Recipe added to favorites!');
+        } else if (response.status === 409) {
+          console.log('Recipe is already in favorites');
         } else {
           throw new Error('Failed to add recipe to favorites');
         }
@@ -45,16 +49,16 @@ const AddToFavorites = ({ recipeId }) => {
       console.error('Error adding to favorites:', error);
     }
   };
-
+  
   const removeFromFavorites = async () => {
     try {
       const response = await fetch(`https://back-end-six-iota.vercel.app/api/favorites/${recipeId}`, {
         method: 'DELETE',
         credentials: 'include',
       });
-
+  
       if (response.ok) {
-        setIsFavorite(false); // Update isFavorite state after removal
+        setIsFavorite(false);
         console.log('Recipe removed from favorites!');
       } else {
         throw new Error('Failed to remove recipe from favorites');

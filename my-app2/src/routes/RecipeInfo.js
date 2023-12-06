@@ -40,18 +40,20 @@ const RecipeInfo = () => {
         },
         body: JSON.stringify({ title: newTitle }),
       });
-
+  
       if (response.ok) {
         console.log('Recipe title updated successfully');
         setEditingTitle(false);
         fetchRecipeData();
       } else {
-        throw new Error('Failed to update recipe title');
+        const errorText = await response.text(); // Get error message from response body
+        throw new Error(`Failed to update recipe title: ${response.status} ${errorText}`);
       }
     } catch (error) {
       console.error('Error updating recipe title:', error);
     }
   };
+  
 
   return (
     <div>
