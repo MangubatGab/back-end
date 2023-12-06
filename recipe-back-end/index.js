@@ -6,6 +6,7 @@ const session = require('express-session');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 // MongoDB Connection
 mongoose.connect('mongodb+srv://gabmangubat:Gabriel11082013@cluster0.qcgxnks.mongodb.net/recipeApp', {
   useNewUrlParser: true,
