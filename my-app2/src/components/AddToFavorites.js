@@ -13,42 +13,51 @@ const AddToFavorites = ({ recipeId }) => {
         const data = await response.json();
         setIsFavorite(data.favorites.includes(recipeId));
       } else if (response.status === 404) {
-        setIsFavorite(false);
+        setIsFavorite(false); // Recipe not found in favorites
+        // Consider displaying a notification to inform the user
       } else {
         throw new Error('Failed to fetch favorites');
       }
     } catch (error) {
       console.error('Error checking if recipe is a favorite:', error);
+      // Handle error, show error message, etc.
     }
   }, [recipeId]);
-
+  
   useEffect(() => {
     checkIfFavorite();
   }, [checkIfFavorite]);
+  
 
   const addToFavorites = async () => {
     try {
-      if (!isFavorite) {
-        const response = await fetch(`https://back-end-six-iota.vercel.app/api/favorites/${recipeId}`, {
-          method: 'POST',
-          credentials: 'include',
-        });
+      if (isFavorite) {
+        console.log('Recipe is already in favorites');
+        return; // No need to proceed if already a favorite
+      }
   
-        if (response.ok) {
-          setIsFavorite(true);
-          console.log('Recipe added to favorites!');
-        } else if (response.status === 409) {
+      const response = await fetch(`https://back-end-six-iota.vercel.app/api/favorites/${recipeId}`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+  
+      if (response.ok) {
+        setIsFavorite(true);
+        console.log('Recipe added to favorites!');
+      } else {
+        const responseBody = await response.json();
+        if (response.status === 409) {
           console.log('Recipe is already in favorites');
         } else {
-          throw new Error('Failed to add recipe to favorites');
+          throw new Error(responseBody.message || 'Failed to add recipe to favorites');
         }
-      } else {
-        console.log('Recipe is already in favorites');
       }
     } catch (error) {
-      console.error('Error adding to favorites:', error);
+      console.error('Error adding to favorites:', error.message);
+      // Handle the error, show a message to the user, etc.
     }
   };
+  
   
   const removeFromFavorites = async () => {
     try {
