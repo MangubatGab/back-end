@@ -12,16 +12,21 @@ const Recipe = () => {
     const fetchRecipesFromDB = async () => {
       try {
         const response = await fetch('https://back-end-six-iota.vercel.app/api/recipes');
+        
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+  
         const data = await response.json();
         setRecipes(data);
       } catch (error) {
         console.error('Error fetching recipes:', error);
       }
     };
-
+  
     fetchRecipesFromDB();
   }, []);
-
+  
   return (
     <div>
       <div style={{ paddingBottom: '80px' }}>
