@@ -18,12 +18,14 @@ const RecipeInfo = () => {
         const data = await response.json();
         setRecipeData(data);
       } else {
-        throw new Error('Failed to fetch recipe data');
+        const errorText = await response.text(); // Get error message from response body
+        throw new Error(`Failed to fetch recipe data: ${response.status} ${errorText}`);
       }
     } catch (error) {
       console.error('Error fetching recipe data:', error);
     }
   }, [recipeId]);
+  
 
   useEffect(() => {
     fetchRecipeData();
