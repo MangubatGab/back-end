@@ -2,14 +2,22 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Recipe = require('./models/Recipe'); // Your Recipe model
 const session = require('express-session');
+const cors = require('cors'); // Import the cors package
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors()); // Use cors middleware at the top
 // MongoDB Connection
 mongoose.connect('mongodb+srv://gabmangubat:Gabriel11082013@cluster0.qcgxnks.mongodb.net/recipeApp', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB!');
 });
 
 // CORS middleware function
