@@ -22,7 +22,7 @@ db.once('open', () => {
 
 // CORS middleware function
 app.use((req, res, next) => {
-  const allowedOrigins = ['http://localhost:3001','*']; // Add other allowed origins if needed
+  const allowedOrigins = ['http://localhost:3001','https://back-end-six-iota.vercel.app/']; // Add other allowed origins if needed
   const { origin } = req.headers;
 
   if (allowedOrigins.includes(origin)) {

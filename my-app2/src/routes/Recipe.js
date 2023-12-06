@@ -11,10 +11,7 @@ const Recipe = () => {
   useEffect(() => {
     const fetchRecipesFromDB = async () => {
       try {
-        const response = await fetch('https://back-end-six-iota.vercel.app/api/recipes',{
-          method: 'GET',
-          mode: 'no-cors'
-        });
+        const response = await fetch('https://back-end-six-iota.vercel.app/api/recipes');
         const data = await response.json();
         setRecipes(data);
       } catch (error) {
