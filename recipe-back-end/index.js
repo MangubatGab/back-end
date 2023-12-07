@@ -41,11 +41,11 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.use(session({
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: true,
-}));
+// app.use(session({
+//   secret: 'your-secret-key',
+//   resave: false,
+//   saveUninitialized: true,
+// }));
 
 // Define Routes
 app.get('/api/recipes', async (req, res) => {
@@ -74,18 +74,21 @@ app.get('/api/recipes/:recipeId', async (req, res) => {
 });
 
 app.post('/api/favorites/:recipeId', async (req, res) => {
+  const favorites = [];
   const { recipeId } = req.params;
 
   try {
-    const recipe = await Recipe.findById(recipeId);
+    // const recipe = await Recipe.findById(recipeId);
 
-    if (!recipe) {
-      return res.status(404).json({ message: 'Recipe not found' });
-    }
+    // if (!recipe) {
+    //   return res.status(404).json({ message: 'Recipe not found' });
+    // }
+
+    favorites.push(recipeId);
 
     // Logic to add the recipe to user's favorites (assuming session-based user)
-    req.session.favorites = [...(req.session.favorites || []), recipeId];
-    res.status(200).json({ message: 'Recipe added to favorites' });
+    // req.session.favorites = [...(req.session.favorites || []), recipeId];
+    res.status(200).json(favorites);
   } catch (error) {
     res.status(500).json({ message: 'Error adding recipe to favorites', error: error.message });
   }
