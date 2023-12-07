@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Recipe = require('./models/Recipe'); // Your Recipe model
+const FavoriteRecipe = require('./models/FavoriteRecipe'); // New model for favorite recipes
 const cors = require('cors'); // Import the cors package
 
 const app = express();
@@ -47,34 +48,22 @@ app.get('/api/recipes/:recipeId', async (req, res) => {
   }
 });
 
-const favorites = []; // Store favorite recipe IDs
-
 app.post('/api/favorites/:recipeId', async (req, res) => {
   const { recipeId } = req.params;
 
   try {
-    // Logic to add the recipe to favorites
-    favorites.push(recipeId);
-    res.status(200).json(recipeId);
-  } catch (error) {
-    res.status(500).json({ message: 'Error adding recipe to favorites', error: error.message });
-  }
-});
+    const existingFavorite = await FavoriteRecipe.findOne({ recipeId });
 
-app.put('/api/recipes/:recipeId', async (req, res) => {
-  const { recipeId } = req.params;
-  const { title } = req.body;
-
-  try {
-    const recipe = await Recipe.findByIdAndUpdate(recipeId, { title }, { new: true });
-
-    if (!recipe) {
-      return res.status(404).json({ message: 'Recipe not found' });
+    if (existingFavorite) {
+      return res.status(409).json({ message: 'Recipe is already in favorites' });
     }
 
-    res.status(200).json(recipe);
+    const newFavorite = new FavoriteRecipe({ recipeId });
+    await newFavorite.save();
+
+    res.status(200).json({ message: 'Recipe added to favorites' });
   } catch (error) {
-    res.status(500).json({ message: 'Error updating recipe title', error: error.message });
+    res.status(500).json({ message: 'Error adding recipe to favorites', error: error.message });
   }
 });
 
@@ -82,15 +71,9 @@ app.delete('/api/favorites/:recipeId', async (req, res) => {
   const { recipeId } = req.params;
 
   try {
-    const index = favorites.indexOf(recipeId);
+    await FavoriteRecipe.findOneAndDelete({ recipeId });
 
-    if (index !== -1) {
-      // Remove the recipe ID from favorites if it exists
-      favorites.splice(index, 1);
-      res.status(200).json({ message: 'Recipe removed from favorites' });
-    } else {
-      res.status(404).json({ message: 'Recipe not found in favorites' });
-    }
+    res.status(200).json({ message: 'Recipe removed from favorites' });
   } catch (error) {
     res.status(500).json({ message: 'Error removing recipe from favorites', error: error.message });
   }
@@ -98,8 +81,8 @@ app.delete('/api/favorites/:recipeId', async (req, res) => {
 
 app.get('/api/favorites', async (req, res) => {
   try {
-    // For demonstration, sending back the array of favorite IDs
-    res.status(200).json(favorites);
+    const favorites = await FavoriteRecipe.find();
+    res.status(200).json(favorites.map((favorite) => favorite.recipeId));
   } catch (error) {
     res.status(500).json({ message: 'Error fetching user favorites', error: error.message });
   }
