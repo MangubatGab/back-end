@@ -42,8 +42,6 @@ const AddToFavorites = ({ recipeId }) => {
         headers: {
           'Content-Type' : 'application/json',  
         },
-
-        body: JSON.stringify({recipeId}),
       });
   
       if (response.ok) {
