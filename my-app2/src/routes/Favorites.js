@@ -44,40 +44,39 @@ const Favorites = () => {
   };
 
   useEffect(() => {
-    fetchFavorites();
-  }, []); // Fetch favorites on component mount
-
-  useEffect(() => {
     const fetchFavoritesDetails = async () => {
       try {
         const favoriteRecipesDetails = [];
-    
+  
         for (const recipeId of favorites) {
-          const response = await fetch(`https://back-end-six-iota.vercel.app/api/recipes/${recipeId}`, {
-            credentials: 'include',
-          });
-    
-          if (response.ok) {
-            const recipeDetails = await response.json();
-            favoriteRecipesDetails.push(recipeDetails);
-          } else {
-            console.error(`Failed to fetch details for recipe ID ${recipeId}`);
-            // Handle specific error cases if needed
+          try {
+            const response = await fetch(`https://back-end-six-iota.vercel.app/api/recipes/${recipeId}`, {
+              credentials: 'include',
+            });
+  
+            if (response.ok) {
+              const recipeDetails = await response.json();
+              favoriteRecipesDetails.push(recipeDetails);
+            } else {
+              console.error(`Failed to fetch details for recipe ID ${recipeId}`);
+              // Handle specific error cases if needed
+            }
+          } catch (fetchError) {
+            console.error(`Error fetching recipe ID ${recipeId}:`, fetchError);
+            // Handle fetch error for individual recipe
           }
         }
-    
+  
         setFavoriteRecipes(favoriteRecipesDetails);
       } catch (error) {
         console.error('Error fetching favorite recipes details:', error);
         // Handle error or show an error message
       }
     };
-    
-    useEffect(() => {
-      fetchFavoritesDetails();
-    }, [favorites]);
-    
-  }, [favorites]); // Fetch recipe details when favorites change
+  
+    fetchFavoritesDetails();
+  }, [favorites]);
+   // Fetch recipe details when favorites change
 
   return (
     <div>
