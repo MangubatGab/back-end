@@ -57,6 +57,9 @@ const Favorites = () => {
             if (response.ok) {
               const recipeDetails = await response.json();
               favoriteRecipesDetails.push(recipeDetails);
+              // After setting favoriteRecipes
+              console.log('Favorite Recipes:', favoriteRecipes);
+
             } else {
               console.error(`Failed to fetch details for recipe ID ${recipeId}`);
               // Handle specific error cases if needed

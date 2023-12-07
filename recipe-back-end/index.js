@@ -43,13 +43,13 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// app.use(session({
-//   secret: 'your-secret-key',
-//   resave: false,
-//   saveUninitialized: true,
-// }));
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+}));
 
-// Define Routes
+
 app.get('/api/recipes', async (req, res) => {
   try {
     const recipes = await Recipe.find();
@@ -135,7 +135,7 @@ app.delete('/api/favorites/:recipeId', async (req, res) => {
 app.get('/api/favorites', async (req, res) => {
   try {
     // Retrieve user's favorites from session (assuming session-based user)
-    // const userFavorites = req.session.favorites || [];
+    const userFavorites = req.session.favorites || [];
 
     // For demonstration, sending back the array of favorite IDs
     res.status(200).json(favorites);
