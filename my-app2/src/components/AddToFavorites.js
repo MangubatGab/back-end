@@ -39,6 +39,11 @@ const AddToFavorites = ({ recipeId }) => {
       const response = await fetch(`https://back-end-six-iota.vercel.app/api/favorites/${recipeId}`, {
         method: 'POST',
         credentials: 'include',
+        headers: {
+          'Content-Type' : 'application/json',  
+        },
+
+        body: JSON.stringify({recipeId}),
       });
   
       if (response.ok) {
