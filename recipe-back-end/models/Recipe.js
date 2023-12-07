@@ -23,10 +23,7 @@ const recipeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  favorites: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Recipe',
-  }],
+
 });
 
 const Recipe = mongoose.model('Recipe', recipeSchema);

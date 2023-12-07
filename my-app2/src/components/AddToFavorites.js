@@ -49,6 +49,7 @@ const AddToFavorites = ({ recipeId }) => {
         console.log('Recipe added to favorites!');
       } else {
         const responseBody = await response.json();
+        console.log(responseBody);
         if (response.status === 409) {
           console.log('Recipe is already in favorites');
         } else {
